@@ -34,16 +34,16 @@ export default Ember.Component.extend({
     "controllers.@each.breadCrumbModel",
     "pathNames.[]", function() {
     var controllers = this.get("controllers");
-    var defaultPaths = this.get("pathNames");
     var breadCrumbs = Ember.A([]);
 
-    controllers.forEach(function(controller, index) {
+    controllers.forEach(function(controller) {
       var crumbs = controller.get("breadCrumbs") || Ember.A([]);
       var singleCrumb = controller.get("breadCrumb");
 
       if (!Ember.isBlank(singleCrumb)) {
         crumbs.push({
           label: singleCrumb,
+          title: singleCrumb,
           path: controller.get("breadCrumbPath"),
           model: controller.get("breadCrumbModel"),
         });
@@ -52,6 +52,7 @@ export default Ember.Component.extend({
       crumbs.forEach(function (crumb) {
         breadCrumbs.addObject(Ember.Object.create({
           label: crumb.label,
+          title: crumb.title || crumb.label,
           path: crumb.path,
           model: crumb.model,
           linkable: Ember.isPresent(crumb.linkable) ? crumb.linkable : crumb.path !== false,
